@@ -25,11 +25,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")
+
+    // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("org.mockito:mockito-junit-jupiter")
     testImplementation("com.nhaarman:mockito-kotlin:1.6.0")
+    testImplementation("io.rest-assured:rest-assured:3.3.0")
 }
 
 tasks.withType<Test> {

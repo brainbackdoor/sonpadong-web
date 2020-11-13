@@ -4,8 +4,9 @@ fun toNoticeViews(notices: List<Notice>): List<NoticeView> {
     return notices.map { toNoticeView(it) }
 }
 
-private fun toNoticeView(notice: Notice): NoticeView {
+fun toNoticeView(notice: Notice): NoticeView {
     return NoticeView(
+            notice.id,
             notice.title,
             notice.content,
             notice.createdDate.toString()
