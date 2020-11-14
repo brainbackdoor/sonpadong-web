@@ -31,6 +31,7 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("org.mockito:mockito-junit-jupiter")
+    testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("com.nhaarman:mockito-kotlin:1.6.0")
     testImplementation("io.rest-assured:rest-assured:3.3.0")
 }
