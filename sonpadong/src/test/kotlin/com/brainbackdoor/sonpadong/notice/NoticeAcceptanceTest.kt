@@ -60,6 +60,22 @@ class NoticeAcceptanceTest {
         assertThat(actual[0].title).isEqualTo("2029년 사목지침")
     }
 
+    @Test
+    fun `공지사항을 수정한다`() {
+        `공지사항을 생성한다`("수정전 타이틀", "수정전 컨텐츠")
+        val updateView = NoticeUpdateView("수정후 타이틀", "수정후 컨텐츠")
+
+        val actual = given().with()
+                .body(updateView)
+                .put("$NOTICE_BASE_URL/1")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .`as`(NoticeView::class.java)
+        assertThat(actual.title).isEqualTo(updateView.title)
+        assertThat(actual.content).isEqualTo(updateView.content)
+    }
+
     fun createNotice(count: Int) {
         for (i in 0..count) {
             `공지사항을 생성한다`("202${i}년 사목지침", "형제자매 여러분")

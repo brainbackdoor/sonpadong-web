@@ -5,6 +5,11 @@ import javax.persistence.Entity
 
 @Entity
 class Notice(
-        val title: String,
-        val content: String
-) : BaseEntity<Notice>()
+        var title: String,
+        var content: String
+) : BaseEntity<Notice>() {
+    fun update(update: Notice) {
+        this.title = update.title
+        this.content = update.content
+    }
+}

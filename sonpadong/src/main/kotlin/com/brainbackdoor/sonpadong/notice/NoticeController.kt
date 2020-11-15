@@ -21,6 +21,11 @@ class NoticeController {
         return ResponseEntity.created(URI(NOTICE_BASE_URL + "/" + notice.id)).build()
     }
 
+    @PutMapping("$NOTICE_BASE_URL/{id}")
+    fun update(@RequestBody noticeView: NoticeUpdateView, @PathVariable id: Long): ResponseEntity<NoticeView> =
+            ResponseEntity.ok(noticeService.update(id, noticeView))
+
+
     @GetMapping(NOTICE_HOME_URL)
     fun findLatest(): ResponseEntity<List<NoticeView>> = ResponseEntity.ok(noticeService.findLatest())
 }
