@@ -19,7 +19,6 @@ class NoticeRepositoryTest {
         val notice = Notice("사목지침", "친애하는 형제자매 여러분")
         repository.save(notice)
 
-        println("공지시간 " + notice.createdDate)
         assertThat(notice.createdDate).isAfterOrEqualTo(now)
     }
 }

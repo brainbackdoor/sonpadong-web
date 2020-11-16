@@ -14,6 +14,8 @@ class NoticeService @Autowired constructor(
             .findById(id)
             .orElseThrow { ResourceNotFoundException("$id 에 해당하는 공지사항이 없습니다") }
 
+    fun findViewById(id: Long) = toNoticeView(findById(id))
+
     fun create(noticeView: NoticeCreateView): NoticeView {
         val notice = noticeView.toNotice()
         return toNoticeView(noticeRepository.save(notice))

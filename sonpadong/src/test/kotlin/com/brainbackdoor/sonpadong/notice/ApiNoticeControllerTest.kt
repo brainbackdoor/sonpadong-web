@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class NoticeControllerTest(@Autowired val mockMvc: MockMvc) {
+class ApiNoticeControllerTest(@Autowired val mockMvc: MockMvc) {
     @MockBean
     private lateinit var noticeService: NoticeService
 
@@ -26,7 +26,7 @@ class NoticeControllerTest(@Autowired val mockMvc: MockMvc) {
         mockMvc.perform(get(NOTICE_BASE_URL))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize<Any>(6)))
+                .andExpect(jsonPath("$", hasSize<Any>(3)))
     }
 
     @Test

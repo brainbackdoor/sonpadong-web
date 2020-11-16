@@ -7,25 +7,29 @@ import java.net.URI
 
 
 @RestController
-class NoticeController {
+@RequestMapping(NOTICE_BASE_URL)
+class ApiNoticeController {
     @Autowired
     private lateinit var noticeService: NoticeService
 
-    @GetMapping(NOTICE_BASE_URL)
-    fun find(): ResponseEntity<List<NoticeView>> = ResponseEntity.ok(noticeService.find())
+    @GetMapping
+    fun find(): ResponseEntity<List<NoticeView>> =
+            ResponseEntity.ok(noticeService.find())
 
-    @PostMapping(NOTICE_BASE_URL)
+    @GetMapping("/{id}")
+    fun findById(@PathVariable id: Long): ResponseEntity<NoticeView> =
+            ResponseEntity.ok(noticeService.findViewById(id))
+
+    @PostMapping
     fun create(@RequestBody noticeView: NoticeCreateView): ResponseEntity<NoticeView> {
         val notice = noticeService.create(noticeView)
 
-        return ResponseEntity.created(URI(NOTICE_BASE_URL + "/" + notice.id)).build()
+        return ResponseEntity.created(URI("$NOTICE_BASE_URL/${notice.id}")).build()
     }
 
-    @PutMapping("$NOTICE_BASE_URL/{id}")
+    @PutMapping("/{id}")
     fun update(@RequestBody noticeView: NoticeUpdateView, @PathVariable id: Long): ResponseEntity<NoticeView> =
             ResponseEntity.ok(noticeService.update(id, noticeView))
 
 
-    @GetMapping(NOTICE_HOME_URL)
-    fun findLatest(): ResponseEntity<List<NoticeView>> = ResponseEntity.ok(noticeService.findLatest())
 }
