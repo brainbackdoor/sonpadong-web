@@ -1,5 +1,6 @@
-package com.brainbackdoor.sonpadong.notice
+package com.brainbackdoor.sonpadong.board.post
 
+import com.brainbackdoor.sonpadong.board.Board
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,14 +10,15 @@ import javax.transaction.Transactional
 
 @DataJpaTest
 @Transactional
-class NoticeRepositoryTest {
+class PostRepositoryTest {
     @Autowired
-    private lateinit var repository: NoticeRepository
+    private lateinit var repository: PostRepository
 
     @Test
     fun `글을 작성하면 작성시간이 저장된다`() {
         val now = now()
-        val notice = Notice("사목지침", "친애하는 형제자매 여러분")
+        val board = Board("공지사항")
+        val notice = Post("사목지침", "친애하는 형제자매 여러분", board)
         repository.save(notice)
 
         assertThat(notice.createdDate).isAfterOrEqualTo(now)
