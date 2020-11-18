@@ -12,10 +12,10 @@ class ApiBoardController {
     private lateinit var boardService: BoardService
 
     @GetMapping
-    fun find() : ResponseEntity<List<BoardView>> = ResponseEntity.ok(toBoardViews(boardService.find()))
+    fun find(): ResponseEntity<List<BoardView>> = ResponseEntity.ok(boardService.find())
 
     @PostMapping
-    fun create(@RequestBody view: BoardCreateView) : ResponseEntity<BoardView> {
+    fun create(@RequestBody view: BoardCreateView): ResponseEntity<BoardView> {
         val board = boardService.create(view)
 
         return ResponseEntity.created(URI("$BOARD_BASE_URL/${board.id}")).build()

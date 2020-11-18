@@ -1,7 +1,9 @@
 package com.brainbackdoor.sonpadong.board.post
 
 import com.brainbackdoor.sonpadong.board.BOARD_BASE_URL
-import com.brainbackdoor.sonpadong.board.BoardView
+import com.brainbackdoor.sonpadong.board.BoardCreateView
+import com.brainbackdoor.sonpadong.board.category.CATEGORY_BASE_URL
+import com.brainbackdoor.sonpadong.board.category.CategoryCreateView
 import com.brainbackdoor.sonpadong.support.AcceptanceTest
 import com.brainbackdoor.sonpadong.support.given
 import io.restassured.mapper.TypeRef
@@ -18,7 +20,8 @@ class PostAcceptanceTest : AcceptanceTest() {
 
     @BeforeEach
     fun setUp() {
-        createBoard("공지사항")
+        createCategory("나눔의 광장")
+        createBoards(1L, listOf("공지사항", "송파동 주보", "자유의 광장"))
         createPosts(9)
     }
 
@@ -70,7 +73,7 @@ class PostAcceptanceTest : AcceptanceTest() {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = [3, 5, 8])
+    @ValueSource(ints = [1])
     fun `게시글을 수정한다`(id: Int) {
         val view = `특정 게시글을 조회한다`(id)
         val updateView = PostUpdateView(1L, "수정후 타이틀", "수정후 컨텐츠")
@@ -92,10 +95,22 @@ class PostAcceptanceTest : AcceptanceTest() {
         }
     }
 
-    fun createBoard(title: String) {
+    fun createBoards(categoryId: Long, titles: List<String>) {
+        titles.forEach { createBoard(categoryId, it) }
+    }
+
+    fun createBoard(categoryId: Long, title: String) {
         given().with()
-                .body(BoardView(title))
+                .body(BoardCreateView(categoryId, title))
                 .post(BOARD_BASE_URL)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+    }
+
+    fun createCategory(title: String) {
+        given().with()
+                .body(CategoryCreateView(title))
+                .post(CATEGORY_BASE_URL)
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
     }
