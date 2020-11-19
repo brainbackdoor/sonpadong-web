@@ -2,10 +2,7 @@ package com.brainbackdoor.sonpadong.board.category
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 
 @RestController
@@ -13,6 +10,14 @@ import java.net.URI
 class ApiCategoryController {
     @Autowired
     private lateinit var categoryService: CategoryService
+
+    @GetMapping
+    fun find(): ResponseEntity<List<CategoryView>> =
+            ResponseEntity.ok(categoryService.find())
+
+    @GetMapping("/{id}")
+    fun findById(@PathVariable id: Long): ResponseEntity<CategoryView> =
+            ResponseEntity.ok(categoryService.findByIdView(id))
 
     @PostMapping
     fun create(@RequestBody view: CategoryCreateView): ResponseEntity<CategoryView> {

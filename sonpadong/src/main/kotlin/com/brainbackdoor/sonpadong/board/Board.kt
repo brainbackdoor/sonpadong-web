@@ -12,6 +12,12 @@ class Board(
         @JoinColumn(foreignKey = ForeignKey(name = "fk_board_to_category"))
         var category: Category
 ) : BaseEntity<Board>() {
+    @Column(nullable = false)
+    private var position: Int = 0
+
+    init {
+        position = category.sizeOfBoards() + 1
+    }
 
     @OneToMany(mappedBy = "board")
     private val posts: MutableList<Post> = mutableListOf()

@@ -1,7 +1,6 @@
 package com.brainbackdoor.sonpadong.board
 
-import com.brainbackdoor.sonpadong.board.category.CATEGORY_BASE_URL
-import com.brainbackdoor.sonpadong.board.category.CategoryCreateView
+import com.brainbackdoor.sonpadong.board.category.createCategory
 import com.brainbackdoor.sonpadong.support.AcceptanceTest
 import com.brainbackdoor.sonpadong.support.given
 import io.restassured.mapper.TypeRef
@@ -16,12 +15,7 @@ class BoardAcceptanceTest : AcceptanceTest() {
     @CsvSource("공지사항")
     fun `게시판을 생성한다`(title: String) {
         createCategory("나눔의 광장")
-        val view = BoardCreateView(1L, title)
-        given().with()
-                .body(view)
-                .post(BOARD_BASE_URL)
-                .then()
-                .statusCode(HttpStatus.CREATED.value())
+        createBoards(1L, listOf(title, "송파동 주보", "자유의 광장"))
 
         val boards = given().with()
                 .get(BOARD_BASE_URL)
@@ -30,14 +24,18 @@ class BoardAcceptanceTest : AcceptanceTest() {
                 .extract()
                 .`as`(object : TypeRef<List<BoardView>>() {})
 
-        assertThat(boards.last().title).isEqualTo(view.title)
+        assertThat(boards.first().title).isEqualTo(title)
     }
+}
 
-    fun createCategory(title: String) {
-        given().with()
-                .body(CategoryCreateView(title))
-                .post(CATEGORY_BASE_URL)
-                .then()
-                .statusCode(HttpStatus.CREATED.value())
-    }
+fun createBoards(categoryId: Long, titles: List<String>) {
+    titles.forEach { createBoard(categoryId, it) }
+}
+
+fun createBoard(categoryId: Long, title: String) {
+    given().with()
+            .body(BoardCreateView(categoryId, title))
+            .post(BOARD_BASE_URL)
+            .then()
+            .statusCode(HttpStatus.CREATED.value())
 }

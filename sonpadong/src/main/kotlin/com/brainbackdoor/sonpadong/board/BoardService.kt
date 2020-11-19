@@ -4,8 +4,10 @@ import com.brainbackdoor.sonpadong.ResourceNotFoundException
 import com.brainbackdoor.sonpadong.board.category.CategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class BoardService @Autowired constructor(
         private var boardRepository: BoardRepository,
         private var categoryService: CategoryService

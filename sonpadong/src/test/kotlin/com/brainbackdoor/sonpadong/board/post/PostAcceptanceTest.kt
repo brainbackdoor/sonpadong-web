@@ -1,9 +1,7 @@
 package com.brainbackdoor.sonpadong.board.post
 
-import com.brainbackdoor.sonpadong.board.BOARD_BASE_URL
-import com.brainbackdoor.sonpadong.board.BoardCreateView
-import com.brainbackdoor.sonpadong.board.category.CATEGORY_BASE_URL
-import com.brainbackdoor.sonpadong.board.category.CategoryCreateView
+import com.brainbackdoor.sonpadong.board.category.createCategory
+import com.brainbackdoor.sonpadong.board.createBoards
 import com.brainbackdoor.sonpadong.support.AcceptanceTest
 import com.brainbackdoor.sonpadong.support.given
 import io.restassured.mapper.TypeRef
@@ -22,19 +20,13 @@ class PostAcceptanceTest : AcceptanceTest() {
     fun setUp() {
         createCategory("나눔의 광장")
         createBoards(1L, listOf("공지사항", "송파동 주보", "자유의 광장"))
-        createPosts(9)
+        createPosts(1L, 9)
     }
 
     @ParameterizedTest
     @CsvSource("2020년 사목지침,안녕하세요")
     fun `게시글을 생성한다`(title: String, contents: String) {
-        val view = PostCreateView(1L, title, contents)
-
-        given().with()
-                .body(view)
-                .post(POST_BASE_URL)
-                .then()
-                .statusCode(HttpStatus.CREATED.value())
+        createPost(1L, title, contents)
 
         val actual = given().with()
                 .get(POST_BASE_URL)
@@ -42,7 +34,7 @@ class PostAcceptanceTest : AcceptanceTest() {
                 .statusCode(HttpStatus.OK.value())
                 .extract()
                 .`as`(object : TypeRef<List<PostView>>() {})
-        assertThat(actual.last().title).isEqualTo(view.title)
+        assertThat(actual.last().title).isEqualTo(title)
     }
 
     @Test
@@ -61,15 +53,15 @@ class PostAcceptanceTest : AcceptanceTest() {
     @ParameterizedTest
     @ValueSource(ints = [3, 5, 8])
     fun `특정 게시글을 조회한다`(id: Int): PostView {
-        val notice = given().with()
+        val post = given().with()
                 .get("$POST_BASE_URL/$id")
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
                 .`as`(PostView::class.java)
 
-        assertThat(notice.title).isEqualTo("202${id}년 사목지침")
-        return notice
+        assertThat(post.title).isEqualTo("202${id}년 사목지침")
+        return post
     }
 
     @ParameterizedTest
@@ -89,29 +81,19 @@ class PostAcceptanceTest : AcceptanceTest() {
         assertThat(actual.content).isEqualTo(updateView.content)
     }
 
-    fun createPosts(count: Int) {
-        for (i in 1..count) {
-            `게시글을 생성한다`("202${i}년 사목지침", "형제자매 여러분")
-        }
-    }
 
-    fun createBoards(categoryId: Long, titles: List<String>) {
-        titles.forEach { createBoard(categoryId, it) }
-    }
+}
 
-    fun createBoard(categoryId: Long, title: String) {
-        given().with()
-                .body(BoardCreateView(categoryId, title))
-                .post(BOARD_BASE_URL)
-                .then()
-                .statusCode(HttpStatus.CREATED.value())
+fun createPosts(boardId: Long, count: Int) {
+    for (i in 1..count) {
+        createPost(boardId, "202${i}년 사목지침", "형제자매 여러분")
     }
+}
 
-    fun createCategory(title: String) {
-        given().with()
-                .body(CategoryCreateView(title))
-                .post(CATEGORY_BASE_URL)
-                .then()
-                .statusCode(HttpStatus.CREATED.value())
-    }
+fun createPost(boardId: Long, title: String, contents: String) {
+    given().with()
+            .body(PostCreateView(boardId, title, contents))
+            .post(POST_BASE_URL)
+            .then()
+            .statusCode(HttpStatus.CREATED.value())
 }
