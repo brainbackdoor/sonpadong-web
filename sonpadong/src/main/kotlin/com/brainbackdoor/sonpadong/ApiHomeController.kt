@@ -1,8 +1,8 @@
 package com.brainbackdoor.sonpadong
 
-import com.brainbackdoor.sonpadong.board.post.POST_LATEST_URL
-import com.brainbackdoor.sonpadong.board.post.PostService
-import com.brainbackdoor.sonpadong.board.post.PostView
+import com.brainbackdoor.sonpadong.boards.posts.POST_LATEST_URL
+import com.brainbackdoor.sonpadong.boards.posts.PostService
+import com.brainbackdoor.sonpadong.boards.posts.PostView
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
