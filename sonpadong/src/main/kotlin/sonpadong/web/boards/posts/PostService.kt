@@ -20,9 +20,9 @@ class PostService @Autowired constructor(
 
     fun findViewById(id: Long) = toPostView(findById(id))
 
-    fun create(view: PostCreateView): PostView {
-        val board = boardService.findById(view.boardId)
-        val notice = view.toPost(board)
+    fun create(request: PostCreateRequest): PostView {
+        val board = boardService.findById(request.boardId)
+        val notice = request.toPost(board)
         return toPostView(postRepository.save(notice))
     }
 

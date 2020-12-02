@@ -5,8 +5,9 @@ import sonpadong.web.boards.Board
 const val POST_BASE_URL = "/api/posts"
 const val POST_LATEST_URL = "/api/posts-latest"
 
-class PostCreateView(
+data class PostCreateRequest(
         val boardId: Long,
+
         val title: String,
         val content: String
 ) {

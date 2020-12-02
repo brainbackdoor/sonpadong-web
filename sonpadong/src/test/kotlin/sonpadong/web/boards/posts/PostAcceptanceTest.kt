@@ -80,19 +80,17 @@ class PostAcceptanceTest : AcceptanceTest() {
         assertThat(actual.title).isEqualTo(updateView.title)
         assertThat(actual.content).isEqualTo(updateView.content)
     }
-
-
 }
 
 fun createPosts(boardId: Long, count: Int) {
     for (i in 1..count) {
-        createPost(boardId, "202${i}년 사목지침", "형제자매 여러분")
+        createPost(boardId, "", "형제자매 여러분")
     }
 }
 
 fun createPost(boardId: Long, title: String, contents: String) {
     given().with()
-            .body(PostCreateView(boardId, title, contents))
+            .body(PostCreateRequest(boardId, title, contents))
             .post(POST_BASE_URL)
             .then()
             .statusCode(HttpStatus.CREATED.value())
