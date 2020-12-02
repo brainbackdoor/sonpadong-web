@@ -2,6 +2,7 @@ package sonpadong.web.boards.posts
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
@@ -21,8 +22,8 @@ class ApiPostController {
             ResponseEntity.ok(postService.findViewById(id))
 
     @PostMapping
-    fun create(@RequestBody view: PostCreateView): ResponseEntity<PostView> {
-        val post = postService.create(view)
+    fun create(@RequestBody request: PostCreateRequest): ResponseEntity<PostView> {
+        val post = postService.create(request)
 
         return ResponseEntity.created(URI("$POST_BASE_URL/${post.id}")).build()
     }
@@ -30,6 +31,4 @@ class ApiPostController {
     @PutMapping("/{id}")
     fun update(@RequestBody view: PostUpdateView, @PathVariable id: Long): ResponseEntity<PostView> =
             ResponseEntity.ok(postService.update(id, view))
-
-
 }
