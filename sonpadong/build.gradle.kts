@@ -38,6 +38,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-cloudwatch")
+    implementation("net.logstash.logback:logstash-logback-encoder")
 }
 
 tasks.withType<Test> {
