@@ -37,6 +37,7 @@ dependencies {
     testImplementation("io.rest-assured:rest-assured:3.3.0")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.cloud:spring-cloud-starter-aws")
     implementation("io.micrometer:micrometer-registry-cloudwatch")
 }
 
