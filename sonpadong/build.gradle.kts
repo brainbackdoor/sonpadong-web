@@ -35,6 +35,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("com.nhaarman:mockito-kotlin:1.6.0")
     testImplementation("io.rest-assured:rest-assured:3.3.0")
+
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-cloudwatch")
 }
 
 tasks.withType<Test> {
