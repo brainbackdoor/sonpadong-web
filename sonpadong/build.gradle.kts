@@ -17,14 +17,19 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    // Web
     implementation("org.springframework.boot:spring-boot-starter-web")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    // Kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation("org.apache.commons:commons-lang3:3.8.1")
+
+    // Database
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.h2database:h2")
 
     // Test
@@ -36,6 +41,7 @@ dependencies {
     testImplementation("com.nhaarman:mockito-kotlin:1.6.0")
     testImplementation("io.rest-assured:rest-assured:3.3.0")
 
+    // Monitoring
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE")
     implementation("io.micrometer:micrometer-registry-cloudwatch")
